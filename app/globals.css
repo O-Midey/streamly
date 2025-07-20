@@ -1,26 +1,48 @@
 @import "tailwindcss";
+@import "tailwindcss/utilities";
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
 
+/* Light Theme */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-bg: #fff1f5; /* soft blush */
+  --color-text: #1f1f1f; /* almost black */
+  --color-accent: #ec4899; /* pink-500 */
+  --color-muted: #fcddec; /* blush tint */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Dark Theme */
+.dark {
+  --color-bg: #1f1d2b; /* deep eggplant */
+  --color-text: #ecc8da; /* soft pink */
+  --color-accent: #f472b6; /* pink-400 */
+  --color-muted: #2e293b; /* muted dark */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Custom Swiper Pagination Styles */
+
+.swiper-pagination-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.swiper-pagination-vertical .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: var(--color-muted);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  border-radius: 9999px;
+}
+
+.swiper-pagination-vertical .swiper-pagination-bullet-active {
+  background: var(--color-accent);
+  opacity: 1;
 }
