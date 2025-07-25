@@ -15,4 +15,18 @@ export type Movie = {
   vote_count: number;
   first_air_date?: string;
   name?: string;
+  genreNames?: string[];
+};
+
+export type TVShow = {
+  id: number;
+  name: string;
+  poster_path: string;
+  first_air_date: string;
+  genre_ids: number[];
+};
+
+export type Genre = {
+  id: number;
+  name: string;
 };

@@ -5,10 +5,11 @@ import Image from "next/image";
 
 type MovieCardProps = {
   id: number;
-  title: string;
+  title: string; // can be title or name
   posterPath: string;
-  releaseDate: string;
+  releaseDate: string; // release_date or first_air_date
   genres?: string[];
+  type?: "movie" | "tv";
 };
 
 export default function MovieCard({
@@ -17,20 +18,21 @@ export default function MovieCard({
   posterPath,
   releaseDate,
   genres = [],
+  type,
 }: MovieCardProps) {
   const releaseYear = new Date(releaseDate).getFullYear();
 
   return (
     <Link
-      href={`/movie/${id}`}
-      className="relative w-[180px] md:w-[260px] h-[420px] md:h-[480px] rounded-2xl overflow-hidden group shadow-md transition-transform duration-300"
+      href={`/${type || "movie"}/${id}`}
+      className="relative w-full aspect-[2/3] rounded-sm overflow-hidden group shadow-md transition-transform duration-300"
     >
       <Image
         src={`https://image.tmdb.org/t/p/w500${posterPath}`}
         alt={title}
         width={300}
         height={450}
-        className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300 brightness-[0.45]"
+        className="object-cover transition-transform group-hover:scale-105 duration-300 brightness-[0.45]"
       />
 
       {/* Hover overlay */}
@@ -43,14 +45,15 @@ export default function MovieCard({
           <span className="bg-[#ff69b4]/30 border border-white/20 px-2 py-0.5 rounded-full ">
             {releaseYear}
           </span>
-          {genres.slice(0, 2).map((genre, index) => (
-            <span
-              key={index}
-              className="bg-white/10 border border-white/20 px-2 py-0.5 rounded-full"
-            >
-              {genre}
-            </span>
-          ))}
+          {genres &&
+            genres.slice(0, 2).map((genre, index) => (
+              <span
+                key={index}
+                className="bg-white/10 border border-white/20 px-2 py-0.5 rounded-full"
+              >
+                {genre}
+              </span>
+            ))}
         </div>
       </div>
     </Link>

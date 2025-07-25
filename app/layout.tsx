@@ -10,6 +10,9 @@ interface RootLayoutProps {
 export const metadata = {
   title: "Streamly",
   description: "Your no.1 movies data site",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {

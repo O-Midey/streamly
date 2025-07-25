@@ -17,24 +17,38 @@ export default function Header() {
   const { theme, setTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 400);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleMobileMenu = () => setMobileOpen(!mobileOpen);
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
 
   return (
-    <header className="fixed w-full p-5 md:px-15 flex items-center justify-between bg-transparent top-0 z-50">
+    <header
+      className={`fixed w-full top-0 z-50 transition-all duration-300 px-5 md:px-15 flex items-center justify-between ${
+        scrolled
+          ? "backdrop-blur-xs bg-background/70 border-b border-[#2a21217b] shadow-[0_4px_12px_rgba(255,255,255,0.08)]"
+          : "bg-transparent border-b border-transparent"
+      }`}
+    >
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-2 py-2">
         {mounted && (
           <Image
             alt="logo"
             src={theme === "light" ? "/logo-light.png" : "/logo-dark.png"}
-            width={180}
-            height={32}
+            width={100}
+            height={16}
           />
         )}
       </Link>
@@ -47,7 +61,7 @@ export default function Header() {
               <span className="text-foreground">{link.name}</span>
               <motion.span
                 layoutId="underline"
-                className="absolute left-0 -bottom-1 h-0.5 w-50% bg-primary origin-left scale-x-0 group-hover:scale-x-100 transition-transform"
+                className="absolute left-0 -bottom-1 h-0.5 w-1/2 bg-primary origin-left scale-x-0 group-hover:scale-x-100 transition-transform"
               />
             </Link>
           ))}
@@ -74,7 +88,7 @@ export default function Header() {
       </div>
 
       {/* Mobile Toggle */}
-      <div className="md:hidden flex items-center gap-3">
+      <div className="md:hidden backdrop-blur-md flex items-center gap-3">
         {mounted && (
           <button onClick={toggleTheme}>
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
@@ -87,7 +101,7 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="absolute top-full left-0 w-full bg-background border-t border-muted shadow-md flex flex-col items-start gap-4 px-4 py-6 md:hidden z-40">
+        <div className="absolute top-full left-0 w-full bg-background backdrop-blur-xs border-t border-muted shadow-md flex flex-col items-start gap-4 px-4 py-6 md:hidden z-40">
           {navLinks.map((link) => (
             <Link key={link.name} href={link.href} className="text-base">
               {link.name}

@@ -26,7 +26,9 @@ body {
 }
 
 /* Custom Swiper Pagination Styles */
-
+.swiper-wrapper {
+  width: 100%;
+}
 .swiper-pagination-vertical {
   display: flex;
   flex-direction: column;

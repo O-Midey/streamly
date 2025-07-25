@@ -3,8 +3,8 @@
 
 import Carousel from "./Carousel";
 import MovieCard from "./MovieCard";
-import { movies } from "../_data/data"; // or fetched TMDB data
-import { Movie } from "../_types/movies";
+import { movies } from "../_data/data";
+import { Movie } from "../_types";
 
 export default function LatestSeriesSection() {
   const latestMovies = movies.results;

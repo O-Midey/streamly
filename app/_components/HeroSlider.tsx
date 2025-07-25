@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import type { Movie } from "../_types/movies";
+import type { Movie } from "../_types";
 import PrimaryButton from "./PrimaryButton";
 
 type Props = { movies: Movie[] };
@@ -33,7 +33,7 @@ export default function HeroSlider({ movies }: Props) {
                 }`}
                 alt={movie.title}
                 fill
-                className="object-cover blur-lg brightness-[0.4]"
+                className="object-cover brightness-[0.4]"
               />
             </div>
 
