@@ -3,7 +3,7 @@ import type { Genre, TVShow } from "../_types";
 
 export default async function TVSeriesPage() {
   let shows: TVShow[] = [];
-  let genreMap: Record<number, string> = {};
+  const genreMap: Record<number, string> = {};
 
   try {
     const res = await fetch(
