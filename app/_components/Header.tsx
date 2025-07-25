@@ -35,7 +35,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all duration-300 px-5 md:px-15 flex items-center justify-between ${
+      className={`fixed w-full top-0 z-50 transition-all mt-10 duration-300 px-5 md:px-15 flex items-center justify-between ${
         scrolled
           ? "backdrop-blur-xs bg-background/70 border-b border-[#2a21217b] shadow-[0_4px_12px_rgba(255,255,255,0.08)]"
           : "bg-transparent border-b border-transparent"
