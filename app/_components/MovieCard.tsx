@@ -24,7 +24,7 @@ export default function MovieCard({
 
   return (
     <Link
-      href={`/${type || "movie"}/${id}`}
+      href={`/${type === "movie" ? "movie" : "tv"}/${id}`}
       className="relative w-full aspect-[2/3] rounded-sm overflow-hidden group shadow-md transition-transform duration-300"
     >
       <Image

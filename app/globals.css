@@ -4,17 +4,9 @@
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 
-/* Light Theme */
+/* Dark Theme (default) */
 :root {
-  --color-bg: #fff1f5; /* soft blush */
-  --color-text: #1f1f1f; /* almost black */
-  --color-accent: #ec4899; /* pink-500 */
-  --color-muted: #fcddec; /* blush tint */
-}
-
-/* Dark Theme */
-.dark {
-  --color-bg: #1f1d2b; /* deep eggplant */
+  --color-bg: #100f12; /* deep eggplant */
   --color-text: #ecc8da; /* soft pink */
   --color-accent: #f472b6; /* pink-400 */
   --color-muted: #2e293b; /* muted dark */

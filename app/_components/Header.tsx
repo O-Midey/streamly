@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { Menu, X, Sun, Moon } from "lucide-react";
+// import { useTheme } from "next-themes";
+import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -14,7 +14,7 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const { theme, setTheme } = useTheme();
+  // const { theme, setTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -31,11 +31,11 @@ export default function Header() {
   }, []);
 
   const toggleMobileMenu = () => setMobileOpen(!mobileOpen);
-  const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
+  // const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all mt-10 duration-300 px-5 md:px-15 flex items-center justify-between ${
+      className={`fixed w-full top-0 z-50 transition-all  duration-300 px-5 md:px-15 flex items-center justify-between ${
         scrolled
           ? "backdrop-blur-xs bg-background/70 border-b border-[#2a21217b] shadow-[0_4px_12px_rgba(255,255,255,0.08)]"
           : "bg-transparent border-b border-transparent"
@@ -44,17 +44,12 @@ export default function Header() {
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2 py-2">
         {mounted && (
-          <Image
-            alt="logo"
-            src={theme === "light" ? "/logo-light.png" : "/logo-dark.png"}
-            width={100}
-            height={16}
-          />
+          <Image alt="logo" src={"/logo-dark.PNG"} width={100} height={16} />
         )}
       </Link>
 
       {/* Nav + Search + Login (Desktop) */}
-      <div className="hidden md:flex items-center gap-6">
+      <div className="hidden lg:flex items-center gap-6">
         <nav className="flex items-center gap-6 text-md font-medium">
           {navLinks.map((link) => (
             <Link key={link.name} href={link.href} className="relative group">
@@ -70,30 +65,30 @@ export default function Header() {
         <input
           type="text"
           placeholder="Search movies..."
-          className="px-3 py-1.5 rounded-md text-md bg-muted border border-border focus:outline-none focus:ring-2 focus:ring-primary transition"
+          className="px-3 py-1.5 font-mono rounded-md text-md bg-muted border border-border focus:outline-none focus:ring-2 focus:ring-primary transition"
         />
 
         <button className="text-md px-4 py-2 rounded-md bg-primary text-primary border border-border hover:opacity-90 transition">
           Log In
         </button>
 
-        {mounted && (
+        {/* {mounted && (
           <button
             onClick={toggleTheme}
             className="p-2 rounded-full text-foreground hover:bg-muted transition"
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-        )}
+        )} */}
       </div>
 
       {/* Mobile Toggle */}
-      <div className="md:hidden backdrop-blur-md flex items-center gap-3">
-        {mounted && (
+      <div className="lg:hidden backdrop-blur-md flex items-center gap-3">
+        {/* {mounted && (
           <button onClick={toggleTheme}>
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-        )}
+        )} */}
         <button onClick={toggleMobileMenu}>
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

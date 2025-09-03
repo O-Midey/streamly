@@ -1,38 +1,5 @@
-export type Movie = {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-  first_air_date?: string;
-  name?: string;
-  genreNames?: string[];
-};
-
-export type TVShow = {
-  id: number;
-  name: string;
-  poster_path: string;
-  first_air_date: string;
-  genre_ids: number[];
-};
-
-export type Genre = {
-  id: number;
-  name: string;
-};
-
 // Types
-interface Movie {
+export interface Movie {
   id: number;
   title: string;
   overview: string;
@@ -93,7 +60,7 @@ interface CrewMember {
   profile_path: string | null;
 }
 
-interface Credits {
+export interface Credits {
   cast: CastMember[];
   crew: CrewMember[];
 }
@@ -107,7 +74,7 @@ interface Video {
   official: boolean;
 }
 
-interface Videos {
+export interface Videos {
   results: Video[];
 }
 
@@ -118,7 +85,7 @@ interface Image {
   width: number;
 }
 
-interface Images {
+export interface Images {
   backdrops: Image[];
   posters: Image[];
 }
@@ -131,7 +98,7 @@ interface SimilarMovie {
   release_date: string;
 }
 
-interface SimilarMovies {
+export interface SimilarMovies {
   results: SimilarMovie[];
 }
 
@@ -141,7 +108,7 @@ interface WatchProvider {
   logo_path: string;
 }
 
-interface WatchProviders {
+export interface WatchProviders {
   results: {
     [countryCode: string]: {
       flatrate?: WatchProvider[];
@@ -162,6 +129,6 @@ interface Review {
   };
 }
 
-interface Reviews {
+export interface Reviews {
   results: Review[];
 }
