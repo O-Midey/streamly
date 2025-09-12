@@ -1,27 +1,34 @@
-// components/LatestMoviesSection.tsx
 "use client";
 
 import Carousel from "./Carousel";
 import MovieCard from "./MovieCard";
 import { movies } from "../_data/data";
-import { Movie } from "../_types";
+
+interface MovieSummary {
+  id: number;
+  title: string;
+  poster_path: string;
+  release_date: string;
+  genre_ids: number[];
+}
 
 export default function LatestSeriesSection() {
-  const latestMovies = movies.results;
+  const latestSeries: MovieSummary[] = movies.results;
+
   return (
     <section className="px-4 md:px-8 py-8">
       <h2 className="text-2xl font-semibold mb-6 text-foreground">
         Latest Series
       </h2>
       <Carousel>
-        {latestMovies.slice(0, 15).map((movie: Movie) => (
+        {latestSeries.slice(0, 15).map((series) => (
           <MovieCard
-            key={movie.id}
-            id={movie.id}
-            title={movie.title}
-            posterPath={movie.poster_path}
-            releaseDate={movie.release_date}
-            genres={movie.genreNames || ["genre"]}
+            key={series.id}
+            id={series.id}
+            title={series.title}
+            posterPath={series.poster_path}
+            releaseDate={series.release_date}
+            genres={series.genre_ids.map((id) => String(id)) || ["genre"]}
           />
         ))}
       </Carousel>

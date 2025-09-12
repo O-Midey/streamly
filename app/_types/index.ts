@@ -1,3 +1,5 @@
+// Types for Movies, TV Shows, and related data
+
 export type TVShow = {
   id: number;
   name: string;
@@ -6,6 +8,44 @@ export type TVShow = {
   genre_ids: number[];
 };
 
+// Core Movie Types
+export interface Movie {
+  id: number;
+  name?: string;
+  title: string;
+  overview: string;
+  release_date: string;
+  runtime: number;
+  vote_average: number;
+  vote_count: number;
+  poster_path: string;
+  backdrop_path: string;
+  genres: Genre[];
+  budget: number;
+  revenue: number;
+  original_language: string;
+  popularity: number;
+  tagline: string;
+  status: string;
+  production_companies: ProductionCompany[];
+  production_countries: ProductionCountry[];
+  spoken_languages: SpokenLanguage[];
+  first_air_date: string;
+  genreNames: [string];
+}
+export interface MovieSummary {
+  id: number;
+  name?: string;
+  title: string;
+  poster_path: string;
+  backdrop_path: string;
+  release_date: string;
+  first_air_date?: string;
+  overview: string;
+  genre_ids: number[];
+}
+
+// Supporting Types
 export interface Genre {
   id: number;
   name: string;
@@ -29,6 +69,7 @@ export interface SpokenLanguage {
   name: string;
 }
 
+// Credits
 export interface CastMember {
   id: number;
   name: string;
@@ -50,6 +91,7 @@ export interface Credits {
   crew: CrewMember[];
 }
 
+// Videos
 export interface Video {
   id: string;
   key: string;
@@ -63,6 +105,7 @@ export interface Videos {
   results: Video[];
 }
 
+// Images
 export interface Image {
   aspect_ratio: number;
   file_path: string;
@@ -75,6 +118,7 @@ export interface Images {
   posters: Image[];
 }
 
+// Similar Movies
 export interface SimilarMovie {
   id: number;
   title: string;
@@ -87,6 +131,7 @@ export interface SimilarMovies {
   results: SimilarMovie[];
 }
 
+// Watch Providers
 export interface WatchProvider {
   provider_id: number;
   provider_name: string;
@@ -103,6 +148,7 @@ export interface WatchProviders {
   };
 }
 
+// Reviews
 export interface Review {
   id: string;
   author: string;

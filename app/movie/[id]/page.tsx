@@ -33,7 +33,7 @@ import {
   SimilarMovies,
   Videos,
   WatchProviders,
-} from "@/app/_types/movie";
+} from "../../_types";
 import { formatCurrency, formatDate, formatRuntime } from "@/app/utils/helpers";
 import Carousel from "@/app/_components/Carousel";
 

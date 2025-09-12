@@ -2,8 +2,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Genre, Movie } from "../_types";
-import TVShow from "../_types/tvshow";
+import { Genre, Movie, TVShow } from "../_types";
 import MovieCard from "./MovieCard";
 import {
   Select,
@@ -182,9 +181,10 @@ export default function MediaGrid({ type }: MediaGridProps) {
           ))
         ) : items.length > 0 ? (
           items.map((item) => {
-            const genreNames = item.genre_ids.map(
-              (id) => genreMap[id] || "Unknown"
-            );
+            const genreNames =
+              "genre_ids" in item
+                ? item.genre_ids.map((id) => genreMap[id] || "Unknown")
+                : item.genres.map((g) => g.name);
 
             return (
               <MovieCard

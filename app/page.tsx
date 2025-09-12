@@ -3,10 +3,10 @@ import LatestMoviesSection from "./_components/LatestMovies";
 import LatestSeriesSection from "./_components/LatestSeries";
 import Trending from "./_components/Trending";
 import { movies } from "./_data/data";
-import type { Movie } from "./_types";
+import type { MovieSummary } from "./_types";
 
 export default async function HomePage() {
-  const topMovies: Movie[] = movies.results.slice(0, 10); // Limit to top 5
+  const topMovies: MovieSummary[] = movies.results.slice(0, 10); // Limit to top 5
 
   return (
     <main>

@@ -8,10 +8,12 @@ import "swiper/css/pagination";
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import type { Movie } from "../_types";
+import type { MovieSummary } from "../_types";
 import PrimaryButton from "./PrimaryButton";
 
-type Props = { movies: Movie[] };
+type Props = {
+  movies: MovieSummary[];
+};
 
 export default function HeroSlider({ movies }: Props) {
   return (
