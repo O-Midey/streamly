@@ -21,30 +21,30 @@ export interface Movie {
   spoken_languages: SpokenLanguage[];
 }
 
-interface Genre {
+export interface Genre {
   id: number;
   name: string;
 }
 
-interface ProductionCompany {
+export interface ProductionCompany {
   id: number;
   name: string;
   logo_path: string | null;
   origin_country: string;
 }
 
-interface ProductionCountry {
+export interface ProductionCountry {
   iso_3166_1: string;
   name: string;
 }
 
-interface SpokenLanguage {
+export interface SpokenLanguage {
   english_name: string;
   iso_639_1: string;
   name: string;
 }
 
-interface CastMember {
+export interface CastMember {
   id: number;
   name: string;
   character: string;
@@ -52,7 +52,7 @@ interface CastMember {
   order: number;
 }
 
-interface CrewMember {
+export interface CrewMember {
   id: number;
   name: string;
   job: string;
@@ -65,7 +65,7 @@ export interface Credits {
   crew: CrewMember[];
 }
 
-interface Video {
+export interface Video {
   id: string;
   key: string;
   name: string;
@@ -90,7 +90,7 @@ export interface Images {
   posters: Image[];
 }
 
-interface SimilarMovie {
+export interface SimilarMovie {
   id: number;
   title: string;
   poster_path: string;
@@ -102,7 +102,7 @@ export interface SimilarMovies {
   results: SimilarMovie[];
 }
 
-interface WatchProvider {
+export interface WatchProvider {
   provider_id: number;
   provider_name: string;
   logo_path: string;
@@ -118,7 +118,7 @@ export interface WatchProviders {
   };
 }
 
-interface Review {
+export interface Review {
   id: string;
   author: string;
   content: string;

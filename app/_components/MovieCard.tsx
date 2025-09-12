@@ -20,11 +20,12 @@ export default function MovieCard({
   genres = [],
   type,
 }: MovieCardProps) {
+  if (!type) type = "movie"; // default to movie if type is not provided
   const releaseYear = new Date(releaseDate).getFullYear();
 
   return (
     <Link
-      href={`/${type === "movie" ? "movie" : "tv"}/${id}`}
+      href={`/movie/${id}`}
       className="relative w-full aspect-[2/3] rounded-sm overflow-hidden group shadow-md transition-transform duration-300"
     >
       <Image

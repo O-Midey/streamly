@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import {
   Play,
   Pause,
-  // Maximize,
   Star,
   Heart,
   Share2,
@@ -22,8 +21,6 @@ import {
   MessageCircle,
   ExternalLink,
   Award,
-  // Camera,
-  // Music,
   Loader2,
 } from "lucide-react";
 import Image from "next/image";
@@ -68,13 +65,13 @@ const MovieDetailsPage: React.FC = () => {
   >("overview");
   const [, setCurrentImageIndex] = useState(0);
 
+  // Media tab trailer button state
+  const [showTrailerButton, setShowTrailerButton] = useState(true);
+  const [trailerTimer, setTrailerTimer] = useState<NodeJS.Timeout | null>(null);
+
   // Refs
-  const castScrollRef = useRef<HTMLDivElement>(
-    null
-  ) as React.RefObject<HTMLDivElement>;
-  const similarScrollRef = useRef<HTMLDivElement>(
-    null
-  ) as React.RefObject<HTMLDivElement>;
+  const castScrollRef = useRef<HTMLDivElement>(null!);
+  // const similarScrollRef = useRef<HTMLDivElement>(null!);
 
   // TMDB API configuration
   const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_KEY;
@@ -177,10 +174,25 @@ const MovieDetailsPage: React.FC = () => {
   };
 
   const getTrailerKey = (): string | null => {
-    const trailer = videos?.results.find(
-      (video) => video.type === "Trailer" && video.site === "YouTube"
+    if (!videos?.results) return null;
+
+    // Look for official trailer first
+    const trailer = videos.results.find(
+      (video) =>
+        video.type === "Trailer" &&
+        video.site === "YouTube" &&
+        video.official === true
     );
-    return trailer?.key || null;
+
+    // If no official trailer, look for any trailer
+    if (!trailer) {
+      const anyTrailer = videos.results.find(
+        (video) => video.type === "Trailer" && video.site === "YouTube"
+      );
+      return anyTrailer?.key || null;
+    }
+
+    return trailer.key;
   };
 
   const scroll = (
@@ -195,6 +207,25 @@ const MovieDetailsPage: React.FC = () => {
       });
     }
   };
+
+  // Automatically show trailer button after a delay when switching to media tab
+  useEffect(() => {
+    if (activeTab === "media" && !isPlaying) {
+      setShowTrailerButton(false);
+      const timer = setTimeout(() => setShowTrailerButton(true), 1200);
+      setTrailerTimer(timer);
+      return () => clearTimeout(timer);
+    }
+    // Reset trailer button state when leaving media tab or playing
+    if (activeTab !== "media" || isPlaying) {
+      setShowTrailerButton(true);
+      if (trailerTimer) {
+        clearTimeout(trailerTimer);
+        setTrailerTimer(null);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, isPlaying]);
 
   // Loading state
   if (loading) {
@@ -224,9 +255,12 @@ const MovieDetailsPage: React.FC = () => {
     );
   }
 
-  const trailerKey = getTrailerKey();
-  const mainCast = credits?.cast.slice(0, 10) || [];
-  const director = credits?.crew.find((member) => member.job === "Director");
+  // Find director from credits
+  const director =
+    credits?.crew?.find((person) => person.job === "Director") || null;
+
+  // Extract main cast (first 12 cast members or fewer if not available)
+  const mainCast = credits?.cast?.slice(0, 12) || [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -236,9 +270,10 @@ const MovieDetailsPage: React.FC = () => {
           <Image
             width={1920}
             height={1080}
-            src={getImageUrl(movie.backdrop_path, "w1280")} // or "original"
+            src={getImageUrl(movie.backdrop_path, "w1280")}
             alt={movie.title}
             className="w-full h-full object-cover"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
         </div>
@@ -286,7 +321,7 @@ const MovieDetailsPage: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-4 mb-8">
-                {trailerKey && (
+                {getTrailerKey() && (
                   <button
                     onClick={() => setIsPlaying(!isPlaying)}
                     className="flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold"
@@ -592,38 +627,67 @@ const MovieDetailsPage: React.FC = () => {
           </div>
         )}
 
-        {/* Media Tab */}
+        {/* Media Tab - FIXED TRAILER SECTION */}
         {activeTab === "media" && (
           <div className="space-y-8">
             {/* Trailer Section */}
-            {trailerKey && (
+            {getTrailerKey() ? (
               <div>
                 <h2 className="text-2xl font-bold mb-4">Trailer</h2>
                 <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
                   {isPlaying ? (
                     <iframe
-                      src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
+                      src={`https://www.youtube.com/embed/${getTrailerKey()}?autoplay=1&mute=0`}
                       className="w-full h-full"
+                      title={`${movie.title} Trailer`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <Image
-                        width={200}
-                        height={200}
+                        width={1280}
+                        height={720}
                         src={getImageUrl(movie.backdrop_path, "w1280")}
                         alt={movie.title}
                         className="w-full h-full object-cover"
                       />
-                      <button
-                        onClick={() => setIsPlaying(true)}
-                        className="absolute flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-sm text-white rounded-lg hover:bg-white/20 transition-colors"
-                      >
-                        <Play className="w-6 h-6" />
-                        Play Trailer
-                      </button>
+                      {showTrailerButton && (
+                        <button
+                          onClick={() => {
+                            if (trailerTimer) {
+                              clearTimeout(trailerTimer);
+                              setTrailerTimer(null);
+                            }
+                            setIsPlaying(true);
+                            setShowTrailerButton(false);
+                          }}
+                          className="absolute flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-sm text-white rounded-lg hover:bg-white/20 transition-colors"
+                        >
+                          <Play className="w-6 h-6" />
+                          Play Trailer
+                        </button>
+                      )}
+                      {!showTrailerButton && !isPlaying && (
+                        <div className="absolute flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-sm text-white rounded-lg">
+                          <Loader2 className="w-6 h-6 animate-spin" />
+                          Starting in a few seconds...
+                        </div>
+                      )}
                     </div>
                   )}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Trailer</h2>
+                <div className="relative aspect-video bg-muted rounded-lg flex items-center justify-center">
+                  <div className="text-center">
+                    <Play className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
+                    <p className="text-muted-foreground">
+                      No trailer available
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
@@ -700,6 +764,11 @@ const MovieDetailsPage: React.FC = () => {
                     {review.content.length > 300
                       ? `${review.content.substring(0, 300)}...`
                       : review.content}
+                    {review.content.length > 300 && (
+                      <button className="text-primary hover:underline ml-2">
+                        Read more
+                      </button>
+                    )}
                   </p>
                 </div>
               ))}
@@ -745,10 +814,8 @@ const MovieDetailsPage: React.FC = () => {
                     </div>
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                   </div>
-                  <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {similarMovie.title.length > 25
-                      ? `${similarMovie.title.substring(0, 22)}...`
-                      : similarMovie.title}
+                  <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors truncate">
+                    {similarMovie.title}
                   </h4>
                   <p className="text-sm text-muted-foreground">
                     {new Date(similarMovie.release_date).getFullYear()}
